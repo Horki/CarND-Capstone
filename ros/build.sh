@@ -9,3 +9,5 @@ fi
 
 catkin_make -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Ofast -DBUILD_SHARED_LIBS=OFF -DCATKIN_ENABLE_TESTING=OFF
 
+echo "Source setup"
+source devel/setup.sh
