@@ -1,3 +1,9 @@
+# Team
+
+|Author|E-Mail|
+|-|-|
+|Ivan Zvonimir Horvat|ivanzvonimirhovat@gmail.com|
+
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
 Please use **one** of the two installation options, either native **or** docker installation.
@@ -18,6 +24,43 @@ Please use **one** of the two installation options, either native **or** docker 
 * [Dataspeed DBW](https://bitbucket.org/DataspeedInc/dbw_mkz_ros)
   * Use this option to install the SDK on a workstation that already has ROS installed: [One Line SDK Install (binary)](https://bitbucket.org/DataspeedInc/dbw_mkz_ros/src/81e63fcc335d7b64139d7482017d6a97b405e250/ROS_SETUP.md?fileviewer=file-view-default)
 * Download the [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases).
+
+### Bugfixes!!!
+* [314 SteeringReport object has no attribute 'steering_wheel_angle_cmd](https://github.com/udacity/CarND-Capstone/issues/314)
+
+Due to unavailability of (DBW_MKZ_MSGS v1.1.1) in Ubuntu repository, I fixed by adding manually older version in [repo](https://github.com/Horki/CarND-Capstone/tree/master/ros/src/dbw_mkz_msgs).
+
+* [317 Camera checkbox error in styx/bridge](https://github.com/udacity/CarND-Capstone/issues/317)
+
+When I turn on camera checkbox in a simulator I have error:
+
+```bash
+message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/engineio/server.py", line 544, in _trigger_event
+    return self.handlers[event](*args)
+  File "/usr/local/lib/python2.7/dist-packages/socketio/server.py", line 509, in _handle_eio_message
+    self._handle_event(sid, pkt.namespace, pkt.id, pkt.data)
+  File "/usr/local/lib/python2.7/dist-packages/socketio/server.py", line 448, in _handle_event
+    self._handle_event_internal(self, sid, data, namespace, id)
+  File "/usr/local/lib/python2.7/dist-packages/socketio/server.py", line 451, in _handle_event_internal
+    r = server._trigger_event(data[0], namespace, sid, *data[1:])
+  File "/usr/local/lib/python2.7/dist-packages/socketio/server.py", line 480, in _trigger_event
+    return self.handlers[namespace][event](*args)
+  File "/capstone/ros/src/styx/server.py", line 60, in image
+    bridge.publish_camera(data)
+  File "/capstone/ros/src/styx/bridge.py", line 183, in publish_camera
+    image_message = self.bridge.cv2_to_imgmsg(image_array, encoding="rgb8")
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/cv_bridge/core.py", line 248, in cv2_to_imgmsg
+    img_msg.height = cvim.shape[0]
+IndexError: tuple index out of range
+```
+
+*This was fixed by upgrading Pillow to newer version (ex.: v6.2.1)*
+
+```bash
+ pip install pillow==6.2.1
+```
 
 ### Docker Installation
 [Install Docker](https://docs.docker.com/engine/installation/)
@@ -46,11 +89,15 @@ git clone https://github.com/Horki/CarND-Capstone.git
 ```bash
 cd CarND-Capstone
 pip install -r requirements.txt
+# Also update Pillow, due to some issues
+pip install pillow --upgrade
 ```
 3. Make and run styx
 ```bash
 cd ros
 catkin_make
+# Or build a release version
+# catkin_make -DCMAKE_BUILD_TYPE=Release
 source devel/setup.sh
 roslaunch launch/styx.launch
 ```
@@ -58,6 +105,9 @@ roslaunch launch/styx.launch
 
 ### Real world testing
 1. Download [training bag](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic_light_bag_file.zip) that was recorded on the Udacity self-driving car.
+```bash
+wget --tries=3 "https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic_light_bag_file.zip"
+```
 2. Unzip the file
 ```bash
 unzip traffic_light_bag_file.zip
@@ -72,6 +122,24 @@ cd CarND-Capstone/ros
 roslaunch launch/site.launch
 ```
 5. Confirm that traffic light detection works on real life images
+
+### Results
+
+System Architecture
+
+<img src="imgs/final-project-ros-graph-v2.png" />
+
+Test Lap full circle, [YT link](https://youtu.be/LL6oPsXn3mE).
+
+<img src="imgs/test_lap.gif" />
+
+Self-driving without traffic light recognition, [YT link](https://youtu.be/K5D6BhHIR7c).
+
+<img src="imgs/no_traffic_light.gif" />
+
+Self-driving with traffic light recognition, [YT link](https://youtu.be/tsihzBN2VBI) (lowest resolution).
+
+<img src="imgs/traffic_light.gif" />
 
 ### Other library/driver information
 Outside of `requirements.txt`, here is information on other driver/library versions used in the simulator and Carla:
