@@ -21,7 +21,7 @@ current status in `/vehicle/traffic_lights` message. You can use this message to
 as well as to verify your TL classifier.
 '''
 
-LOOKAHEAD_WPS = 30  # Number of waypoints we will publish. You can change this number
+LOOKAHEAD_WPS = 30  # Number of waypoints we will publish.
 MAX_DECEL     = 0.5 # Maximum deceleration for vehicle.
 
 class WaypointUpdater(object):
@@ -30,9 +30,9 @@ class WaypointUpdater(object):
         rospy.init_node('waypoint_updater')
 
         # ROS Subscribers
-        rospy.Subscriber('/current_pose',     PoseStamped, self.pose_cb)
-        rospy.Subscriber('/base_waypoints',   Lane,        self.waypoints_cb)
-        rospy.Subscriber('/traffic_waypoint', Int32,       self.traffic_cb)
+        rospy.Subscriber('/current_pose',     PoseStamped, self.pose_cb,      queue_size=1)
+        rospy.Subscriber('/base_waypoints',   Lane,        self.waypoints_cb, queue_size=1)
+        rospy.Subscriber('/traffic_waypoint', Int32,       self.traffic_cb,   queue_size=1)
 
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
 
@@ -46,7 +46,7 @@ class WaypointUpdater(object):
         self.loop()
 
     def loop(self):
-        rate = rospy.Rate(50) # 50 Hz
+        rate = rospy.Rate(10) # 10 Hz
         while not rospy.is_shutdown():
             if self.pose and self.base_lane:
                 self.publish_waypoints()
@@ -125,7 +125,7 @@ class WaypointUpdater(object):
         self.stopline_wp_idx = msg.data
 
     def obstacle_cb(self, msg):
-        # TODO: Callback for /obstacle_waypoint message. We will implement it later
+        # Callback for /obstacle_waypoint message. We will implement it later
         pass
 
     def get_waypoint_velocity(self, waypoint):
