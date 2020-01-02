@@ -54,9 +54,9 @@ class DBWNode(object):
                                          BrakeCmd, queue_size=1)
 
         # subscribe to all topics needed: twist_cmd, enabled, current_velocity
-        rospy.Subscriber('/vehicle/dbw_enabled', Bool,         self.dbw_enabled_cb)
-        rospy.Subscriber('/twist_cmd',           TwistStamped, self.twist_cb)
-        rospy.Subscriber('/current_velocity',    TwistStamped, self.velocity_cb)
+        rospy.Subscriber('/vehicle/dbw_enabled', Bool,         self.dbw_enabled_cb, queue_size=1)
+        rospy.Subscriber('/twist_cmd',           TwistStamped, self.twist_cb,       queue_size=1)
+        rospy.Subscriber('/current_velocity',    TwistStamped, self.velocity_cb,    queue_size=1)
 
         # init controller
         self.controller = Controller(vehicle_mass=vehicle_mass,
@@ -82,7 +82,7 @@ class DBWNode(object):
         self.loop()
 
     def loop(self):
-        rate = rospy.Rate(50) # 50Hz
+        rate = rospy.Rate(10) # 10Hz
         while not rospy.is_shutdown():
             if not None in (self.current_vel, self.linear_vel, self.angular_vel):
                 self.throttle, self.brake, self.steering = self.controller.control(
