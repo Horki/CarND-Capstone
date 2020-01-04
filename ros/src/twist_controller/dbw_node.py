@@ -82,7 +82,7 @@ class DBWNode(object):
         self.loop()
 
     def loop(self):
-        rate = rospy.Rate(10) # 10Hz
+        rate = rospy.Rate(50) # 50Hz
         while not rospy.is_shutdown():
             if not None in (self.current_vel, self.linear_vel, self.angular_vel):
                 self.throttle, self.brake, self.steering = self.controller.control(
