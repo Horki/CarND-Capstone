@@ -8,9 +8,9 @@ class TLClassifier(object):
     def __init__(self):
         self.detection_graph = None
         self.tl_map = {
-            1: TrafficLight.RED,
-            2: TrafficLight.YELLOW,
-            3: TrafficLight.GREEN,
+            1: TrafficLight.GREEN,
+            2: TrafficLight.RED,
+            3: TrafficLight.YELLOW,
             4: TrafficLight.UNKNOWN
         }
         self.detection_graph = tf.Graph()
