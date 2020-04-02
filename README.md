@@ -26,6 +26,7 @@ Please use **one** of the two installation options, either native **or** docker 
 * Download the [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases).
 
 ### Bugfixes!!!
+
 * [314 SteeringReport object has no attribute 'steering_wheel_angle_cmd](https://github.com/udacity/CarND-Capstone/issues/314)
 
 Due to unavailability of (DBW_MKZ_MSGS v1.1.1) in Ubuntu repository, I fixed by adding manually older version in [repo](https://github.com/Horki/CarND-Capstone/tree/master/ros/src/dbw_mkz_msgs).
@@ -56,43 +57,51 @@ Traceback (most recent call last):
 IndexError: tuple index out of range
 ```
 
-*This was fixed by upgrading Pillow to newer version (ex.: v6.2.1)*
+* This was fixed by upgrading Pillow to newer version (ex.: v6.2.1)*
 
 ```bash
  pip install pillow==6.2.1
 ```
 
 ### Docker Installation
+
 [Install Docker](https://docs.docker.com/engine/installation/)
 
 Build the docker container
+
 ```bash
 docker build . -t capstone
 ```
 
 Run the docker file
+
 ```bash
 docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
 ```
 
 ### Port Forwarding
+
 To set up port forwarding, please refer to the "uWebSocketIO Starter Guide" found in the classroom (see Extended Kalman Filter Project lesson).
 
 ### Usage
 
 1. Clone the project repository
+
 ```bash
 git clone https://github.com/Horki/CarND-Capstone.git
 ```
 
 2. Install python dependencies
+
 ```bash
 cd CarND-Capstone
 pip install -r requirements.txt
 # Also update Pillow, due to some issues
 pip install pillow --upgrade
 ```
+
 3. Make and run styx
+
 ```bash
 cd ros
 catkin_make
@@ -101,47 +110,58 @@ catkin_make
 source devel/setup.sh
 roslaunch launch/styx.launch
 ```
+
 4. Run the simulator
 
 ### Real world testing
+
 1. Download [training bag](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic_light_bag_file.zip) that was recorded on the Udacity self-driving car.
+
 ```bash
 wget --tries=3 "https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic_light_bag_file.zip"
 ```
+
 2. Unzip the file
+
 ```bash
 unzip traffic_light_bag_file.zip
 ```
+
 3. Play the bag file
+
 ```bash
 rosbag play -l traffic_light_bag_file/traffic_light_training.bag
 ```
+
 4. Launch your project in site mode
+
 ```bash
 cd CarND-Capstone/ros
 roslaunch launch/site.launch
 ```
+
 5. Confirm that traffic light detection works on real life images
 
 ### Results
 
 System Architecture
 
-<img src="imgs/final-project-ros-graph-v2.png" />
+![Final Project ROS graph](imgs/final-project-ros-graph-v2.png)
 
 Test Lap full circle, [YT link](https://youtu.be/LL6oPsXn3mE).
 
-<img src="imgs/test_lap.gif" />
+![Test Lap](imgs/test_lap.webp)
 
 Self-driving without traffic light recognition, [YT link](https://youtu.be/K5D6BhHIR7c).
 
-<img src="imgs/no_traffic_light.gif" />
+![No Traffic Lights](imgs/no_traffic_light.webp)
 
 Self-driving with traffic light recognition, [YT link](https://youtu.be/tsihzBN2VBI) (lowest resolution).
 
-<img src="imgs/traffic_light.gif" />
+![With Traffic Lights](imgs/traffic_light.webp)
 
 ### Other library/driver information
+
 Outside of `requirements.txt`, here is information on other driver/library versions used in the simulator and Carla:
 
 Specific to these libraries, the simulator grader and Carla use the following:
